@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1 class="heading1">Personal Form</h1>
+    <form id="registerForm">
+        <fieldset>
+            <legend>Personal Information</legend>
+            <label for="names">Name:</label>
+            <input type="text" name="names"> <br> <br>
+            <label for="age">Age:</label>
+            <input type="number" name="age"> <br> <br>
+            <label for="dob">Date of Birth:</label>
+            <input type="date" name="dob"> <br> <br>
+            <label for="addresses">Address:</label>
+            <textarea cols="30" rows="5" name="addresses"></textarea> <br>
+        </fieldset>
+        <fieldset>
+            <legend>Skills</legend>
+            <label for="selection">Programming Language:</label>
+            <select name="language" id="lang">
+                <option value="--Select--">--Select--</option>
+                <option value="HTML">HTML</option>
+                <option value="CSS">CSS</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="Angular">Angular JS</option>
+            </select> <br> <br>
+            <label for="yearofexp">Years of Experience:</label>
+            <input type="number" name="yearofexp"> <br> <br>
+        </fieldset>
+        <fieldset>
+            <legend>User Registration</legend>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"> <br> <br>
+            <label for="regemail">Email:</label>
+            <input type="email" id="regemail" name="regemail" placeholder="Enter your Email"> <br> <br>
+            <label for="regpassword">Password:</label>
+            <input type="password" id="regpassword" name="regpassword"> <br> <br>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword"> <br> <br>
+            <input type="button" value="Register" onclick="registerUser()">
+            <button type="reset">Reset</button>
+        </fieldset>
+        <fieldset>
+            <legend>Documents</legend>
+            <label for="file">Marksheet:</label>
+            <input type="file"> <br><br>
+            <label for="file">Resume:</label>
+            <input type="file"> <br><br>
+            <label for="file">Government Proof:</label>
+            <input type="file"> <br> <br>
+        </fieldset>
+    </form>
+    <p id="registerMessage" class="error"></p>
+
+    <script>
+        const usersKey = 'registeredUsers';
+        
+        if (!localStorage.getItem(usersKey)) {
+          localStorage.setItem(usersKey, JSON.stringify([]));
+        }
+    
+        function registerUser() {
+          const username = document.getElementById('username').value;
+          const email = document.getElementById('regemail').value;
+          const password = document.getElementById('regpassword').value;
+          const confirmPassword = document.getElementById('confirmPassword').value;
+    
+          if (password !== confirmPassword) {
+            document.getElementById('registerMessage').innerText = "Passwords do not match.";
+            return;
+          }
+    
+          const users = JSON.parse(localStorage.getItem(usersKey));
+          const userExists = users.some(user => user.email === email || user.username === username);
+    
+          if (userExists) {
+            document.getElementById('registerMessage').innerText = "Username or email already exists.";
+            return;
+          }
+    
+          users.push({ username, email, password });
+          localStorage.setItem(usersKey, JSON.stringify(users));
+          document.getElementById('registerMessage').innerText = "Registration successful! Redirecting to login page...";
+    
+          setTimeout(() => {
+            window.location.href = "file:///C:/Users/AMRITA/OneDrive/Documents/GitHub/5G_Trainee/Login/index.html"; // Replace with the correct path to your login page
+          }, 1000);
+        }
+    </script>
+</body>
+</html>
